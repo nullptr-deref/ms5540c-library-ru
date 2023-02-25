@@ -7,6 +7,35 @@
 до и после каждой управляющей последовательности.
 Датчик способен работать на заявленной глубине до 100м.
 
+## Пример кода
+
+Данный простой пример иллюстрирует работу датчика ms5540c. Скетч считывает текущие температуру и давление
+каждые три секунды.
+
+```ino
+#include <ms5540c.h>
+
+const int mclk = 13; // Actually can be any digital pin you want.
+ms5540c sensor(mclk);
+
+void setup() {
+    Serial.begin(9600);
+    SPI.begin();
+    sensor.init();
+}
+
+void loop() {
+    sensor.reset();
+    const float temp = sensor.getTemperature();
+    const float prs = sensor.getPressure(UnitType::mbar);
+    Serial.print("Temp: ");
+    Serial.println(temp);
+    Serial.print("Pressure: ");
+    Serial.println(prs);
+    delay(3000);
+}
+```
+
 ## Особенности подключения к микроконтроллеру
 
 Прежде всего, библиотека использует аппаратную реалицазию протокола SPI, так что необходимо
